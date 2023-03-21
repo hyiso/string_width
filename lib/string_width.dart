@@ -1,10 +1,12 @@
-
+import 'package:ansi_strip/ansi_strip.dart';
 import 'package:characters/characters.dart';
 import 'package:emoji_regex/emoji_regex.dart';
 
 import 'src/east_asian_width.dart';
-import 'src/strip_ansi.dart';
 
+///
+/// Get the visual width of a string [input] - the number of columns required to display it
+/// 
 int stringWidth(String input, {bool ambiguousIsNarrow = true}) {
   if (input.isEmpty) {
     return 0;
@@ -30,11 +32,11 @@ int stringWidth(String input, {bool ambiguousIsNarrow = true}) {
 
 		final code = eastAsianWidth(character);
 		switch (code) {
-			case EastAsianWidth.f:
-			case EastAsianWidth.w:
+			case EastAsianWidth.fullwidth:
+			case EastAsianWidth.wide:
 				width += 2;
 				break;
-			case EastAsianWidth.a:
+			case EastAsianWidth.ambiguous:
 				width += ambiguousCharacterWidth;
 				break;
 			default:

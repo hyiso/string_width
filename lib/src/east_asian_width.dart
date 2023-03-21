@@ -1,38 +1,36 @@
-/// This is copy from package east_asian_width, only support Dart SDK >= 2.17.0
-/// 
-/// Change enum EastAsianWidth to support Dart SDK 2.12.0
-
 /// East Asian Width representation
 enum EastAsianWidth {
-  /// A
-  a,
-  /// F
-  f,
-  /// H
-  h,
-  /// Na
-  na,
-  /// N
-  n,
-  /// W
-  w,
+  ambiguous,
+  fullwidth,
+  halfwidth,
+  narrow,
+  natural,
+  wide,
 }
 
-extension EastAsianWidthLength on EastAsianWidth {
-  // Display width representation
-  int get length {
-    if (this == EastAsianWidth.f ||
-        this == EastAsianWidth.w ||
-        this == EastAsianWidth.a) {
-      return 2;
-    } else {
-      return 1;
+/// East Asian Width abbrevation
+extension EastAsianWidthAbbrev on EastAsianWidth {
+  String get abbrev {
+    switch (this) {
+      case EastAsianWidth.ambiguous:
+        return 'A';
+      case EastAsianWidth.fullwidth:
+        return 'F';
+      case EastAsianWidth.halfwidth:
+        return 'H';
+      case EastAsianWidth.narrow:
+        return 'NA';
+      case EastAsianWidth.natural:
+        return 'N';
+      case EastAsianWidth.wide:
+        return 'W';
     }
   }
 }
+
 /// Returns an [EastAsianWidth] `enum` indicating the input's East Asian width.
 EastAsianWidth eastAsianWidth(String character) {
-  if (character.isEmpty) return EastAsianWidth.n;
+  if (character.isEmpty) return EastAsianWidth.natural;
   var x = character.codeUnitAt(0);
   var y = (character.length == 2) ? character.codeUnitAt(1) : 0;
   var codePoint = x;
@@ -46,7 +44,7 @@ EastAsianWidth eastAsianWidth(String character) {
   if ((0x3000 == codePoint) ||
       (0xFF01 <= codePoint && codePoint <= 0xFF60) ||
       (0xFFE0 <= codePoint && codePoint <= 0xFFE6)) {
-    return EastAsianWidth.f;
+    return EastAsianWidth.fullwidth;
   }
   if ((0x20A9 == codePoint) ||
       (0xFF61 <= codePoint && codePoint <= 0xFFBE) ||
@@ -55,7 +53,7 @@ EastAsianWidth eastAsianWidth(String character) {
       (0xFFD2 <= codePoint && codePoint <= 0xFFD7) ||
       (0xFFDA <= codePoint && codePoint <= 0xFFDC) ||
       (0xFFE8 <= codePoint && codePoint <= 0xFFEE)) {
-    return EastAsianWidth.h;
+    return EastAsianWidth.halfwidth;
   }
   if ((0x1100 <= codePoint && codePoint <= 0x115F) ||
       (0x11A3 <= codePoint && codePoint <= 0x11A7) ||
@@ -95,7 +93,7 @@ EastAsianWidth eastAsianWidth(String character) {
       (0x20000 <= codePoint && codePoint <= 0x2F73F) ||
       (0x2B740 <= codePoint && codePoint <= 0x2FFFD) ||
       (0x30000 <= codePoint && codePoint <= 0x3FFFD)) {
-    return EastAsianWidth.w;
+    return EastAsianWidth.wide;
   }
   if ((0x0020 <= codePoint && codePoint <= 0x007E) ||
       (0x00A2 <= codePoint && codePoint <= 0x00A3) ||
@@ -104,7 +102,7 @@ EastAsianWidth eastAsianWidth(String character) {
       (0x00AF == codePoint) ||
       (0x27E6 <= codePoint && codePoint <= 0x27ED) ||
       (0x2985 <= codePoint && codePoint <= 0x2986)) {
-    return EastAsianWidth.na;
+    return EastAsianWidth.narrow;
   }
   if ((0x00A1 == codePoint) ||
       (0x00A4 == codePoint) ||
@@ -279,68 +277,8 @@ EastAsianWidth eastAsianWidth(String character) {
       (0xE0100 <= codePoint && codePoint <= 0xE01EF) ||
       (0xF0000 <= codePoint && codePoint <= 0xFFFFD) ||
       (0x100000 <= codePoint && codePoint <= 0x10FFFD)) {
-    return EastAsianWidth.a;
+    return EastAsianWidth.ambiguous;
   }
 
-  return EastAsianWidth.n;
-}
-
-/// Returns an integer value indicating the length of the character in terms of display width.
-int characterLength(String character) {
-  var code = eastAsianWidth(character);
-  if (code == EastAsianWidth.f ||
-      code == EastAsianWidth.w ||
-      code == EastAsianWidth.a) {
-    return 2;
-  } else {
-    return 1;
-  }
-}
-
-/// Split a string considering surrogate-pairs.
-Iterable<String> stringToIterable(String string) {
-  return RegExp(r"[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]")
-      .allMatches(string)
-      .map((match) => match.group(0)!);
-}
-
-/// Returns the length of the input string in terms of the number of characters.
-int length(String string) {
-  final characters = stringToIterable(string);
-  var len = 0;
-  for (var i = 0; i < characters.length; i++) {
-    len = len + characterLength(characters.elementAt(i));
-  }
-  return len;
-}
-
-/// Returns a new String that contains a portion of the original input.
-///
-/// The function handles `East Asian Width` characters correctly when calculating the indices.
-String slice(String text, [int? start, int? end]) {
-  final textLen = length(text);
-  start ??= 0;
-  end ??= 1;
-  if (start < 0) {
-    start = textLen + start;
-  }
-  if (end < 0) {
-    end = textLen + end;
-  }
-  var result = '';
-  var eawLen = 0;
-  var chars = stringToIterable(text);
-  for (var i = 0; i < chars.length; i++) {
-    var char = chars.elementAt(i);
-    var charLen = length(char);
-    if (eawLen >= start - (charLen == 2 ? 1 : 0)) {
-      if (eawLen + charLen <= end) {
-        result += char;
-      } else {
-        break;
-      }
-    }
-    eawLen += charLen;
-  }
-  return result;
+  return EastAsianWidth.natural;
 }
