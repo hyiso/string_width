@@ -1,6 +1,6 @@
 name: string_width
 description: Get the visual width of a string - the number of columns required to display it
-version: 0.1.1
+version: 0.1.2
 homepage: https://github.com/hyiso/string_width
 
 environment:
@@ -9,7 +9,6 @@ environment:
 dependencies:
   ansi_strip: ^0.1.0
   characters: ^1.2.1
-  emoji_regex: ^0.0.2
 
 dev_dependencies:
   lints: ^2.0.0

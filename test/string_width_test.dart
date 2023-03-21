@@ -14,7 +14,9 @@ void main() {
     expect(stringWidth('안녕하세요'), 10);
     expect(stringWidth('A\uD83C\uDE00BC'), 5);
     expect(stringWidth('\u001B[31m\u001B[39m'), 0);
-    expect(stringWidth('\u001B]8;;https://github.com\u0007Click\u001B]8;;\u0007'), 5);
+    expect(
+        stringWidth('\u001B]8;;https://github.com\u0007Click\u001B]8;;\u0007'),
+        5);
     expect(stringWidth('\u{231A}'), 2);
     expect(stringWidth('\u{2194}\u{FE0F}'), 2);
     expect(stringWidth('\u{1F469}'), 2);
