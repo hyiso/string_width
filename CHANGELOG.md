@@ -1,3 +1,7 @@
+## 0.1.3
+
+- Use packages dependencies.
+
 ## 0.1.2
 
 - Tempararily remove dependency of [emoji_regex](https://pub.dev/packages/emoji_regex)
