@@ -1,8 +1,7 @@
 import 'package:ansi_strip/ansi_strip.dart';
 import 'package:characters/characters.dart';
-
-import 'src/east_asian_width.dart';
-import 'src/emoji_regex.dart';
+import 'package:east_asian_width/east_asian_width.dart';
+import 'package:emoji_regex/emoji_regex.dart';
 
 ///
 /// Get the visual width of a string [input] - the number of columns required to display it

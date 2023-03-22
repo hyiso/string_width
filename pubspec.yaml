@@ -9,7 +9,15 @@ environment:
 dependencies:
   ansi_strip: ^0.1.0
   characters: ^1.2.1
+  east_asian_width: ^1.0.1
+  emoji_regex: ^0.0.3
 
 dev_dependencies:
+  commitlint_cli: ^0.3.0
+  husky: ^0.1.5
+  lint_staged: ^0.2.0
   lints: ^2.0.0
   test: ^1.16.0
+
+lint_staged:
+  'lib/**.dart': dart fix --apply && dart format --fix
