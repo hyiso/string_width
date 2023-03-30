@@ -1,3 +1,7 @@
+## 0.1.4
+
+- Tempararily use inner emoji_regex.dart until this [PR](https://github.com/wittyneko/emoji_regex/pull/4) is merged
+
 ## 0.1.3
 
 - Use packages dependencies.

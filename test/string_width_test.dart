@@ -40,5 +40,6 @@ void main() {
     expect(stringWidth('👶🏽'), 2);
     expect(stringWidth('👩‍👩‍👦‍👦'), 2);
     expect(stringWidth('👨‍❤️‍💋‍👨'), 2);
+    expect(stringWidth('\u{1FAF6}'), 2);
   });
 }
