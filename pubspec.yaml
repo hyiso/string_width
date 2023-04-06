@@ -10,7 +10,7 @@ dependencies:
   ansi_strip: ^0.1.0
   characters: ^1.2.1
   east_asian_width: ^1.0.1
-  emoji_regex: ^0.0.3
+  emoji_regex: ^0.0.4
 
 dev_dependencies:
   commitlint_cli: ^0.4.0-pre.0
@@ -20,4 +20,4 @@ dev_dependencies:
   test: ^1.16.0
 
 lint_staged:
-  'lib/**.dart': dart fix --apply && dart format --fix
+  '**.dart': dart fix --apply && dart format --fix
